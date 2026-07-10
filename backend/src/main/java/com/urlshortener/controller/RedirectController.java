@@ -23,6 +23,14 @@ public class RedirectController {
         this.urlService = urlService;
     }
 
+    @GetMapping("/")
+    @Operation(summary = "Root redirect to Swagger UI", description = "Redirects root requests to the interactive API documentation page.")
+    public ResponseEntity<Void> redirectToSwagger() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/swagger-ui.html"));
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
+    }
+
     @GetMapping("/{shortCode}")
     @Operation(summary = "Redirect to original destination", description = "Resolves the short code, logs visitor analytics, and issues a 302 (Found) redirect to bypass browser cache.")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode, HttpServletRequest request) {
